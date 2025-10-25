@@ -23,7 +23,7 @@ def calculate_eye_focus_rotation(landmarks):
 
 def isFocused(landmarks):
     offset = 0.2
-    print(abs(calculate_eye_focus_rotation_pitch(landmarks)) - offset, end=";")
+    # print(abs(calculate_eye_focus_rotation_pitch(landmarks)) - offset, end=";")
     return (abs(calculate_eye_focus_rotation(landmarks)) < MAX_HORIZONTAL_THETA) and (abs(calculate_eye_focus_rotation_pitch(landmarks) - offset) < MAX_PITCH_THETA)
 
 def calculate_eye_rotation_left_pitch(landmarks): #left eye

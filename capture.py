@@ -4,6 +4,14 @@ from utility import *
 import numpy as np
 from eyeAngle import *
 from constants import *
+import time
+import pygame
+
+# Initialize pygame mixer
+pygame.mixer.init()
+lastFalse = -1
+lastTrue = -1
+bg = time.time()
 
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(refine_landmarks=True)
@@ -71,7 +79,25 @@ while True:
             # else:
             #     print("Not looking")
             # print(calculate_eye_focus_rotation_pitch(landmarks.landmark))
-            print(isFocused(landmarks.landmark))
+            # print(isFocused(landmarks.landmark))
+            if (isFocused(landmarks.landmark)):
+                lastTrue = time.time()
+                if time.time() - lastFalse >= 20:
+                    print('looked away now!')
+                    notification_sound = pygame.mixer.Sound('assets/notification.wav')
+                    notification_sound.play()
+            else:
+                if time.time() - lastTrue >= 20:
+                    print('looked away for 20 sec')
+                    # Play notification sound
+                    notification_sound = pygame.mixer.Sound('assets/done.wav')
+                    notification_sound.play()
+                    lastTrue = time.time()
+                    lastFalse = time.time()
+            
+
+
+                
             # print(normalizedLandmark_to_numpyVector( landmarks.landmark[6] ))
             # print(calculate_eye_rotation())
             # depthTracking(landmarks)

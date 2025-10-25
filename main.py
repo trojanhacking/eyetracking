@@ -6,7 +6,7 @@ from PyQt6.QtGui import QFont, QImage, QPixmap
 from os.path import join
 import cv2
 import mediapipe as mp #for intelligence
-from testIsFocus import isFocused
+from eyeAngle import isFocused
 
 
 mp_face_mesh = mp.solutions.face_mesh # type: ignore

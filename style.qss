@@ -1,0 +1,24 @@
+QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+QLabel#title { /* Targeting a specific QLabel by its object name */
+    font-size: 24px;
+    color: #333;
+}
+
+/*
+QWidget {
+    background-color: #f0f;
+    color: white;
+}
+*/
+
+QLabel {
+    font-size: 24px;
+    color: #000;
+}

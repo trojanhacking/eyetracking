@@ -61,6 +61,8 @@ cap = cv2.VideoCapture(0)
 while True:
     ret, fr = cap.read()
     frame = cv2.flip(fr, 1)
+    ret, fr = cap.read()
+    frame = cv2.flip(fr, 1)
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = face_mesh.process(rgb)
     h, w, _ = frame.shape
@@ -71,6 +73,7 @@ while True:
             for id, lm in enumerate(landmarks.landmark):
                 
                 x, y = int(lm.x * w), int(lm.y * h)
+                cv2.circle(frame, (x, y), 1, (0,255,0), -1)
                 cv2.circle(frame, (x, y), 1, (0,255,0), -1)
 
             # cv2.circle(frame, (int(landmarks.landmark[468].x * w), int(landmarks.landmark[468].y * h)), radius=3, color=(0, 0, 255), thickness=-1)

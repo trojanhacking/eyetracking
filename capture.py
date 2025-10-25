@@ -23,14 +23,20 @@ while True:
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     results = face_mesh.process(rgb)
 
+    h, w, _ = frame.shape
+
     if results.multi_face_landmarks:
         for landmarks in results.multi_face_landmarks: #each face
             for id, lm in enumerate(landmarks.landmark):
                 h, w, _ = frame.shape
                 x, y = int(lm.x * w), int(lm.y * h)
                 cv2.circle(frame, (x, y), 1, (0,255,0), -1)
-    
-            # if (is_looking_at_screen(landmarks, )):
+
+            
+            if (is_looking_at_screen(landmarks.landmark, w, h)):
+                print("Looking")
+            else:
+                print("Not looking")
     
     cv2.imshow('Eye Tracker', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):

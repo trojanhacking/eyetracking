@@ -27,18 +27,21 @@ while True:
 
     if results.multi_face_landmarks:
         for landmarks in results.multi_face_landmarks: #each face
+            h, w, _ = frame.shape
             for id, lm in enumerate(landmarks.landmark):
-                h, w, _ = frame.shape
+                
                 x, y = int(lm.x * w), int(lm.y * h)
-                cv2.circle(frame, (x, y), 1, (0,255,0), -1)
+                #cv2.circle(frame, (x, y), 1, (0,255,0), -1)
 
-            
+            cv2.circle(frame, (int(landmarks.landmark[468].x * w), int(landmarks.landmark[468].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.circle(frame, (int(landmarks.landmark[473].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
             if (is_looking_at_screen(landmarks.landmark, w, h)):
                 print("Looking")
             else:
                 print("Not looking")
     
     cv2.imshow('Eye Tracker', frame)
+    #quite program
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

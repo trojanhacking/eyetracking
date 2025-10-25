@@ -1,42 +1,13 @@
 import cv2 #for display
 import mediapipe as mp #for intelligence
-import math
 from utility import *
 import numpy as np
+from eyeAngle import *
+from constants import *
 
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(refine_landmarks=True)
 
-def calculate_head_rotation(landmarks, w, h):
-    left = landmarks[127]
-    mid = landmarks[6]
-    right = landmarks[356]
-    return circ_tripoint_to_theta(left, mid, right)
-
-def calculate_eye_rotation_left(landmarks, w, h): #left eye
-    left = landmarks[33]
-    mid = landmarks[468]
-    right = landmarks[133]
-    return circ_tripoint_to_theta(left, mid, right)
-
-def calculate_eye_rotation_right(landmarks, w, h): #left eye
-    left = landmarks[362]
-    mid = landmarks[473]
-    right = landmarks[263]
-    return circ_tripoint_to_theta(left, mid, right)
-
-def calculate_eye_focus_rotation(landmarks, w, h):
-    return calculate_eye_rotation_left(landmarks, w, h) + calculate_eye_rotation_right(landmarks, w, h)
-
-def circ_tripoint_to_theta(left, mid, right):
-    """
-    a = r * cos()
-    b = r * sin()
-    """
-    a = (right.x - left.x) / 2
-    b = ( (mid.x - left.x) - (right.x - mid.x ) ) / 2
-    theta = math.atan(b/a)
-    return theta
 
 # def circ_tripoint_to_vector(left, mid, right):
 #     backMid = right - left
@@ -79,16 +50,28 @@ while True:
             # cv2.circle(frame, (int(landmarks.landmark[468].x * w), int(landmarks.landmark[468].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
             # cv2.circle(frame, (int(landmarks.landmark[473].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
 
-            #head
-            cv2.circle(frame, (int(landmarks.landmark[127].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
-            cv2.circle(frame, (int(landmarks.landmark[6].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
-            cv2.circle(frame, (int(landmarks.landmark[356].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            #left
+            # cv2.circle(frame, (int(landmarks.landmark[70].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.circle(frame, (int(landmarks.landmark[LEFT_EYE_PUPIL].x * w), int(landmarks.landmark[LEFT_EYE_PUPIL].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.circle(frame, (int(landmarks.landmark[LEFT_EYE_TOP].x * w), int(landmarks.landmark[LEFT_EYE_TOP].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.circle(frame, (int(landmarks.landmark[LEFT_EYE_BOTTOM].x * w), int(landmarks.landmark[LEFT_EYE_BOTTOM].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            
+            cv2.circle(frame, (int(landmarks.landmark[RIGHT_EYE_PUPIL].x * w), int(landmarks.landmark[RIGHT_EYE_PUPIL].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.circle(frame, (int(landmarks.landmark[RIGHT_EYE_TOP].x * w), int(landmarks.landmark[RIGHT_EYE_TOP].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.circle(frame, (int(landmarks.landmark[RIGHT_EYE_BOTTOM].x * w), int(landmarks.landmark[RIGHT_EYE_BOTTOM].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            # cv2.circle(frame, (int(landmarks.landmark[105].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+
+            #right
+            # cv2.circle(frame, (int(landmarks.landmark[374].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            # cv2.circle(frame, (int(landmarks.landmark[473].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
+            # cv2.circle(frame, (int(landmarks.landmark[386].x * w), int(landmarks.landmark[473].y * h)), radius=3, color=(0, 0, 255), thickness=-1)
 
             # if (is_looking_at_screen(landmarks.landmark, w, h)):
             #     print("Looking")
             # else:
             #     print("Not looking")
-            print(calculate_eye_focus_rotation(landmarks.landmark, w, h))
+            # print(calculate_eye_focus_rotation_pitch(landmarks.landmark))
+            print(isFocused(landmarks.landmark))
             # print(normalizedLandmark_to_numpyVector( landmarks.landmark[6] ))
             # print(calculate_eye_rotation())
             # depthTracking(landmarks)
